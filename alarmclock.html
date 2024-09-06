@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        body{
+            height: 98vh;
+            width: 98vw;
+            display: flex;
+            position: relative;
+            justify-content: center;
+            transition: 0.5s;
+        }
+        .up,.down{
+            height: 15%; 
+            width: 31.5%;
+            background-color:antiquewhite; 
+            position: absolute;
+        }
+        .up{
+            top: 0;
+        }
+        .down{
+           bottom: 0; 
+        }
+        .r,.l{
+            height: 1.5vh;
+            width: 0.7vh;
+            background-color: black;
+            position: absolute;
+            margin: 0;
+            padding: 0;
+        }
+        .up:hover .r,
+        .up:hover .l,
+        .down:hover .r,
+        .down:hover .l{
+            box-shadow: 5px 5px 7px red;
+            transition: 0.3s;
+        }
+        .down .r{
+            transform:rotate(-0.7turn);
+            top: 40%;
+            left: 45%;
+        }
+        .up .r{
+            transform:rotate(0.7turn);
+            top: 39.25%;
+            left: 40%;
+        }
+        .up .l{
+            transform: rotate(-0.7turn);
+            top: 38.2%;
+            left: 45%;
+            border-radius: 0 0 5vh 0;
+        }
+        .down .l{
+            transform: rotate(0.7turn);
+            top: 40%;
+            left: 50%;
+        }
+        .alarm{
+            /* color: white; */
+            display: flex;
+            position: absolute;
+            height: 30%;
+            width: 35%;
+            top: 20vh;
+            justify-content: space-between;
+        }
+        .dark{
+            background-color: rgba(49, 49, 56, 0.961);
+            color:white ;
+        }
+        .alarm .time{
+            width: 31.5%;
+            height: 100%;
+            /* margin-left: 1vw; */
+            font-size: 2em;
+            transition: 0.5s;
+        }
+        .txt{
+            position: relative;
+            height: 75%;
+            width: 100%;
+            text-align: center;
+            font-size: 2.7vw;
+            top:-4.4vh
+        }
+        .top,.middle,.bottom,.above,.below{
+            height: 33.33333%;
+            width: 100%;
+            margin: 2px 0 2px 0;
+            /* border-bottom: 2px dashed rgba(128, 128, 128, 0.694); */
+        }
+        .border{
+            width: 100%;
+            height: 0.1px;
+            border-bottom: 2px dashed rgb(128, 128, 128) ;
+            margin: 0;
+            padding: 0;
+        }
+        .top,.bottom{
+            opacity: 0.33;
+        }
+        .above,.below{
+            opacity: 0;
+        }
+        .set-alarm{
+            border-radius: 10px;
+            height: 10%;
+            width: 12%;
+            background: linear-gradient(130deg,red,blue);
+            color: white;
+            display: flex;
+            font-size: 1.7em;
+            position: relative;
+            left: -0.9vw;
+            bottom: -60vh;
+            transition:  0.3s;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+        }
+        .set-alarm:hover{
+            background: linear-gradient(130deg,red,blue,rgb(12, 12, 158));
+
+        }
+        .toggle{
+            position: relative;
+            top: 2vh;
+            left: -2vw;
+            height: 2vh;
+            width: 2vw;
+            /* background-color: white; */
+        }
+        .toggle-space{
+            height:77% ;
+            width: 95%;
+            border-radius: 5px;
+        }
+        .toggle-lever{
+            position: absolute;
+            bottom: 0.21vh;
+            left: -0.13vw;
+            height: 107%;
+            width: 50%;
+            border-radius: 50px;
+            background-color: rgb(2, 255, 209);
+        }
+    </style>
+</head>
+<body>
+    <div class="toggle">
+        <div class="toggle-lever left"></div>
+        <div class="toggle-space dark"></div>
+    </div>
+    <div class="alarm">
+        <div id="hour" class="time dark">
+            <div class="txt"><div class="above">1</div><div class="top">16</div><div class="border"></div><div class="middle">17</div><div class="border"></div><div class="bottom">18</div><div class="below">18</div></div>
+            <span class="up"><div class="r"></div><div class="l"></div></span>
+            <span class="down"><div class="r"></div><div class="l"></div></span>
+        </div>
+        <div id="minute" class="time dark">
+            <div class="txt"><div class="above">1</div><div class="top">16</div><div class="border"></div><div class="middle">17</div><div class="border"></div><div class="bottom">18</div><div class="below">18</div></div>
+            <span class="up"><div class="r"></div><div class="l"></div></span>
+            <span class="down"><div class="r"></div><div class="l"></div></span>
+        </div>
+        <div id="second" class="time dark">
+            <div class="txt"><div class="above">1</div><div class="top">16</div><div class="border"></div><div class="middle">17</div><div class="border"></div><div class="bottom">18</div><div class="below">18</div></div>
+            <span class="up"><div class="r"></div><div class="l"></div></span>
+            <span class="down"><div class="r"></div><div class="l"></div></span>
+        </div>
+    </div>
+    <div class="set-alarm">Set Alarm</div>
+</body>
+<script>
+    function set_alarm(){
+        let time=document.getElementsByClassName('middle')
+        let hr= parseInt(time[0].innerHTML)-new Date().getHours()
+        let min=parseInt(time[1].innerHTML)-new Date().getMinutes()
+        let sec=parseInt(time[2].innerHTML)-new Date().getSeconds()
+        let net_time=(hr*3600+min*60+sec)
+        if(net_time<0){
+            console.log(net_time)
+            net_time=24*3600+net_time
+            console.log(net_time-(net_time/3600)*60)
+            console.log('dsiug')
+        }
+        let m=`alarm is set for${net_time/3600}hrs${(net_time%3600)/60}minutes`
+        alert(m)
+        setTimeout(()=>{
+           let audio=new Audio('http://codeskulptor-demos.commondatastorage.googleapis.com/descent/Zombie.mp3')
+           audio.play()
+        },net_time*1000)
+
+    }
+    function setinitial(){
+        let time=new Date()
+        let hrs=time.getHours()
+        let min=time.getMinutes()
+        let sec=time.getSeconds()
+        let middle=document.getElementsByClassName('middle')
+        let bottom=document.getElementsByClassName('bottom')
+        let top=document.getElementsByClassName('top')
+        let above=document.getElementsByClassName('above')
+        let below=document.getElementsByClassName('below')
+        middle[0].innerHTML=hrs.toString()
+        middle[1].innerHTML=min.toString()
+        middle[2].innerHTML=sec.toString()
+        bottom[0].innerHTML=(hrs+1).toString()
+        bottom[1].innerHTML=(min+1).toString()
+        bottom[2].innerHTML=(sec+1).toString() 
+        top[0].innerHTML=(hrs-1).toString()
+        top[1].innerHTML=(min-1).toString()
+        top[2].innerHTML=(sec-1).toString()  
+        above[0].innerHTML=(hrs-1-1).toString()
+        above[1].innerHTML=(min-1-1).toString()
+        above[2].innerHTML=(sec-1-1).toString() 
+        below[0].innerHTML=(hrs+2).toString()
+        below[1].innerHTML=(min+2).toString()
+        below[2].innerHTML=(sec+2).toString() 
+    }
+    function move(move,pos,op){
+        move.style.transform=`translateY(${pos}px)`
+        move.style.opacity=`${op}`
+    }
+    function toggle_icon(move,pos){
+        move.style.transform=`translateX(${pos}px)`
+    }
+    function relocate(element){
+        element.style.transform=`translateY(${0}px)`
+    }
+    setinitial()
+    let pos=0
+    let down=document.getElementsByClassName('down')
+    for(let i=0;i<down.length;i++){
+    down[i].addEventListener('click',()=>{
+        let pos=0
+        let op_top=0.33
+        let op_middle=1
+        let op_bottom=0.33
+        let op_above=0
+        let bottom=document.getElementsByClassName('bottom')
+        let middle=document.getElementsByClassName('middle')
+        let top=document.getElementsByClassName('top')
+        let above=document.getElementsByClassName('above')
+        let below=document.getElementsByClassName('below')
+        let x=setInterval(()=>{
+            move(bottom[i],pos,op_bottom)
+            move(middle[i],pos,op_middle)
+            move(top[i],pos,op_top)
+            move(above[i],pos,op_above)
+            op_bottom-=0.02
+            op_middle-=0.02
+            op_top+=0.02
+            op_above+=0.02
+            pos+=2
+            if(pos>69){
+                clearInterval(x)
+                below[i].firstChild.remove()
+                below[i].innerHTML=bottom[i].innerHTML
+                bottom[i].firstChild.remove()
+                relocate(bottom[i])
+                bottom[i].innerHTML=middle[i].innerHTML
+                middle[i].firstChild.remove()
+                relocate(middle[i])
+                bottom[i].style.opacity='0.33'
+                middle[i].style.opacity='1'
+                middle[i].innerHTML=top[i].innerHTML
+                top[i].firstChild.remove()
+                relocate(top[i])
+                top[i].style.opacity='0.33'
+                top[i].innerHTML=above[i].innerHTML
+                above[i].innerHTML=(parseInt(top[i].innerHTML)-1).toString()
+                if(parseInt(above[i].innerHTML)<0){
+                    if(above[i].parentElement.parentElement.id=='hour')
+                    above[i].innerHTML='23'
+                    else 
+                    above[i].innerHTML='59'
+                }
+                relocate(above[i])
+                above[i].style.opacity='0'
+            }
+        },10)
+    })
+    }
+    let up=document.getElementsByClassName('up')
+    for(let i=0;i<up.length;i++){
+        up[i].addEventListener('click',()=>{
+            let bottom=document.getElementsByClassName('bottom')
+        let middle=document.getElementsByClassName('middle')
+        let top=document.getElementsByClassName('top')
+        let below=document.getElementsByClassName('below')
+        let above=document.getElementsByClassName('above')
+       let pos=0
+     let op_middle=1
+     let op_bottom=0.33
+     let op_top=0.33
+     let op_below=0
+     let x=setInterval(()=>{
+        move(below[i],pos,op_below)
+        move(bottom[i],pos,op_bottom)
+        move(middle[i],pos,op_middle)
+        move(top[i],pos,op_top)
+        pos-=2
+        op_middle-=0.02
+        op_top-=0.02
+        op_bottom+=0.02
+        op_below+=0.02
+        if(pos<-69){
+            clearInterval(x)
+            above[i].firstChild.remove()
+            above[i].innerHTML=top[i].innerHTML
+            top[i].firstChild.remove()
+            relocate(top[i])
+            top[i].innerHTML=middle[i].innerHTML
+            top[i].style.opacity='0.33'
+            middle[i].firstChild.remove()
+            relocate(middle[i])
+            middle[i].innerHTML=bottom[i].innerHTML
+            middle[i].style.opacity='1'
+            bottom[i].firstChild.remove()
+            relocate(bottom[i])
+            bottom[i].innerHTML=below[i].innerHTML
+            bottom[i].style.opacity='0.33'
+            below[i].innerHTML=(parseInt(bottom[i].innerHTML)+1).toString()
+                if(below[i].parentElement.parentElement.id=='hour'){
+                    if(parseInt(below[i].innerHTML)>23){
+                        below[i].innerHTML='00'
+                }
+            }
+            else if(parseInt(below[i].innerHTML)>59)
+            below[i].innerHTML='00'
+            relocate(below[i])
+            below[i].style.opacity='0'
+        }
+     },10)
+        })
+    }
+    let alarmbutton=document.getElementsByClassName('set-alarm')[0]
+    alarmbutton.addEventListener('click',()=>{
+        set_alarm()
+    })
+    let theme=document.getElementsByClassName('toggle')[0]
+    theme.addEventListener('click',()=>{
+        let moveable_icon=theme.firstElementChild
+        let togglespace=theme.lastElementChild
+        let left=moveable_icon.classList.contains('left')
+        if(left){
+          let x=setInterval(()=>{
+            toggle_icon(moveable_icon,pos)
+            pos++
+            if(pos>=20)
+            clearInterval(x)
+          },1)  
+        }
+        else
+        {
+            let x=setInterval(()=>{
+            toggle_icon(moveable_icon,pos)
+            pos--
+            if(pos<=0)
+            clearInterval(x)
+          },1)  
+        }
+        })
+</script>
+</html>
